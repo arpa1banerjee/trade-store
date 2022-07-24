@@ -1,9 +1,7 @@
 package com.db.tradestore.entity;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,8 +12,6 @@ import java.time.LocalDate;
 @Table(name = "TradeStore")
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
 public class Trade {
 
     @Id

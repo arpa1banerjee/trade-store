@@ -1,7 +1,9 @@
 package com.db.tradestore.service;
 
+import com.db.tradestore.dto.TradeDTO;
 import com.db.tradestore.entity.Trade;
 import com.db.tradestore.exception.InvalidTradeException;
+import com.db.tradestore.mapper.TradeMapper;
 import com.db.tradestore.repository.TradeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,16 +18,23 @@ import java.util.function.Predicate;
 public class TradeService {
 
     private final TradeRepository tradeStoreRepository;
+    private final TradeMapper tradeMapper;
 
     private final Predicate<Trade> maturityPredicate = trade -> !trade.getMaturityDate().isBefore(LocalDate.now());
 
     private final BiPredicate<Trade, Trade> versionPredicate = (current, existing) -> current.getVersion() >= existing.getVersion();
 
-    public TradeService(TradeRepository tradeStoreRepository) {
+    public TradeService(TradeRepository tradeStoreRepository, TradeMapper tradeMapper) {
         this.tradeStoreRepository = tradeStoreRepository;
+        this.tradeMapper = tradeMapper;
     }
 
-    public void trade(Trade trade) throws InvalidTradeException {
+    public void trade(TradeDTO tradeDto) throws InvalidTradeException {
+
+        log.info("received incoming trade transmission: {}", tradeDto);
+
+        Trade trade = tradeMapper.tradeDTOtoTrade(tradeDto);
+
         if(isValid(trade)) {
 
             log.info("{} trade is valid and persisting it in store.", trade.getTradeId());
