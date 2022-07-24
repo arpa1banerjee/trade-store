@@ -18,7 +18,6 @@ import java.util.function.Predicate;
 public class TradeService {
 
     private final TradeRepository tradeStoreRepository;
-    private final TradeMapper tradeMapper;
 
     private final Predicate<Trade> maturityPredicate = trade -> !trade.getMaturityDate().isBefore(LocalDate.now());
 
@@ -26,14 +25,13 @@ public class TradeService {
 
     public TradeService(TradeRepository tradeStoreRepository, TradeMapper tradeMapper) {
         this.tradeStoreRepository = tradeStoreRepository;
-        this.tradeMapper = tradeMapper;
     }
 
     public void trade(TradeDTO tradeDto) throws InvalidTradeException {
 
         log.info("received incoming trade transmission: {}", tradeDto);
 
-        Trade trade = tradeMapper.tradeDTOtoTrade(tradeDto);
+        Trade trade = TradeMapper.INSTANCE.tradeDTOtoTrade(tradeDto);
 
         if(isValid(trade)) {
 

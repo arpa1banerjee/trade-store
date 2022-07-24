@@ -1,7 +1,6 @@
 package com.db.tradestore.controller;
 
 import com.db.tradestore.dto.TradeDTO;
-import com.db.tradestore.entity.Trade;
 import com.db.tradestore.exception.InvalidTradeException;
 import com.db.tradestore.service.TradeService;
 import org.springframework.http.HttpStatus;
