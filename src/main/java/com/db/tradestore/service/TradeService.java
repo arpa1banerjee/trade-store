@@ -59,4 +59,14 @@ public class TradeService {
         return false;
     }
 
+    public void expire() {
+        tradeStoreRepository.findAll()
+                .forEach(trade -> {
+                    if (!maturityPredicate.test(trade)) {
+                        trade.setExpiredFlag("Y");
+                        log.info("Trade which needs to updated {}", trade);
+                        tradeStoreRepository.save(trade);
+                    }
+                });
+    }
 }
